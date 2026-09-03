@@ -258,6 +258,29 @@
     gap:14px;
     margin-top:36px;
   }
+  .hero-contact{
+    margin-top:28px;
+  }
+  .hero-contact-label{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    color:var(--yellow);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:14px;
+  }
+  .hero-contact-label::before{
+    content:'';
+    width:16px; height:1px;
+    background:var(--yellow);
+  }
+  .hero-contact-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+  }
   .btn{
     display:inline-flex;
     align-items:center;
@@ -678,66 +701,46 @@
   /* ---------- CLAP IMPACT EFFECT ---------- */
   .clap-impact{
     position:absolute;
-    left:8%;
-    top:38%;
+    left:38%;
+    top:14%;
     width:10px; height:10px;
-    z-index:3;
+    z-index:0;
     pointer-events:none;
   }
-  .clap-impact .ring,
-  .clap-impact .ring2,
-  .clap-impact .line{
+  .clap-impact .bubble{
     position:absolute;
     top:0; left:0;
+    border-radius:50%;
     opacity:0;
   }
-  .clap-impact .ring{
-    width:50px; height:50px;
-    margin:-25px 0 0 -25px;
-    border:2px solid var(--yellow);
-    border-radius:50%;
+  .clap-impact.active .bubble{
+    animation-name:clapBubble;
+    animation-timing-function:ease-out;
+    animation-fill-mode:forwards;
   }
-  .clap-impact .ring2{
-    width:34px; height:34px;
-    margin:-17px 0 0 -17px;
-    border:2px solid var(--blue);
-    border-radius:50%;
-  }
-  .clap-impact .line{
-    width:16px; height:2px;
-    border-radius:2px;
-    margin:-1px 0 0 -8px;
-  }
-  .clap-impact .l1,.clap-impact .l3,.clap-impact .l5{ background:var(--yellow); }
-  .clap-impact .l2,.clap-impact .l4,.clap-impact .l6{ background:var(--blue); }
-  .clap-impact.active .ring{
-    animation:clapRing 0.6s ease-out;
-  }
-  .clap-impact.active .ring2{
-    animation:clapRing2 0.5s ease-out 0.05s;
-  }
-  .clap-impact.active .line{
-    animation:clapLine 0.55s ease-out;
-  }
-  .clap-impact.active .l2{ animation-delay:0.03s; }
-  .clap-impact.active .l3{ animation-delay:0.05s; }
-  .clap-impact.active .l4{ animation-delay:0.08s; }
-  .clap-impact.active .l5{ animation-delay:0.1s; }
-  .clap-impact.active .l6{ animation-delay:0.12s; }
-  @keyframes clapRing{
-    0%{ transform:scale(0.3) translateY(0); opacity:0.85; }
-    100%{ transform:scale(2.1) translateY(16px); opacity:0; }
-  }
-  @keyframes clapRing2{
-    0%{ transform:scale(0.4) translateY(0); opacity:0.8; }
-    100%{ transform:scale(1.6) translateY(20px); opacity:0; }
-  }
-  @keyframes clapLine{
-    0%{ transform:translate(0,0) rotate(var(--line-rot,0deg)); opacity:0.9; }
-    100%{ transform:translate(var(--line-dx,0px), var(--line-dy,16px)) rotate(var(--line-rot,0deg)); opacity:0; }
+  @keyframes clapBubble{
+    0%{ transform:translate(0,0) scale(0.25); opacity:0.75; }
+    100%{ transform:translate(var(--bx,0px), var(--by,10px)) scale(var(--bscale,1.6)); opacity:0; }
   }
   @media(max-width:1024px){
     .clapper-wrap{ display:none; }
+  }
+
+  /* ---------- WATER RIPPLE CLICK EFFECT ---------- */
+  .ripple-wave{
+    position:fixed;
+    border:2px solid var(--blue);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    left:0; top:0;
+    transform:translate(-50%,-50%) scale(0.2);
+    opacity:0.75;
+  }
+  .ripple-wave.wave-b{ border-color:var(--yellow); }
+  @keyframes rippleExpand{
+    0%{ transform:translate(-50%,-50%) scale(0.2); opacity:0.75; }
+    100%{ transform:translate(-50%,-50%) scale(3.4); opacity:0; }
   }
 </style>
 <body>
@@ -760,40 +763,38 @@
     <img class="clapper-board" src="assets/clapper-board.png" alt="">
     <img class="clapper-arm" id="clapperArm" src="assets/clapper-arm.png" alt="">
     <div class="clap-impact" id="clapImpact">
-      <span class="ring"></span>
-      <span class="ring2"></span>
-      <span class="line l1" style="--line-rot:-30deg; --line-dx:-20px; --line-dy:10px"></span>
-      <span class="line l2" style="--line-rot:-10deg; --line-dx:-10px; --line-dy:18px"></span>
-      <span class="line l3" style="--line-rot:10deg;  --line-dx:4px;   --line-dy:22px"></span>
-      <span class="line l4" style="--line-rot:30deg;  --line-dx:16px;  --line-dy:18px"></span>
-      <span class="line l5" style="--line-rot:50deg;  --line-dx:24px;  --line-dy:8px"></span>
-      <span class="line l6" style="--line-rot:70deg;  --line-dx:26px;  --line-dy:-4px"></span>
+      <span class="bubble" style="width:23px;height:23px;margin:-12px 0 0 -12px; background:transparent; border:2px solid var(--yellow); animation-duration:0.6s; animation-delay:0s; --bx:-8px; --by:14px; --bscale:1.9;"></span>
+      <span class="bubble" style="width:15px;height:15px;margin:-8px 0 0 -3px; background:transparent; border:2px solid var(--blue); animation-duration:0.55s; animation-delay:0.04s; --bx:14px; --by:10px; --bscale:2.1;"></span>
+      <span class="bubble" style="width:9px;height:9px;margin:-5px 0 0 -15px; background:var(--yellow); animation-duration:0.5s; animation-delay:0.02s; --bx:-16px; --by:20px; --bscale:1.6;"></span>
+      <span class="bubble" style="width:11px;height:11px;margin:-6px 0 0 9px; background:var(--blue); animation-duration:0.62s; animation-delay:0.08s; --bx:20px; --by:6px; --bscale:1.8;"></span>
+      <span class="bubble" style="width:7px;height:7px;margin:4px 0 0 -6px; background:transparent; border:2px solid var(--blue); animation-duration:0.48s; animation-delay:0.1s; --bx:-6px; --by:22px; --bscale:2.2;"></span>
+      <span class="bubble" style="width:13px;height:13px;margin:-15px 0 0 -1px; background:transparent; border:2px solid var(--yellow); animation-duration:0.58s; animation-delay:0.06s; --bx:6px; --by:-8px; --bscale:1.7;"></span>
+      <span class="bubble" style="width:17px;height:17px;margin:-9px 0 0 -22px; background:transparent; border:2px solid var(--blue); animation-duration:0.64s; animation-delay:0.03s; --bx:-22px; --by:12px; --bscale:1.8;"></span>
+      <span class="bubble" style="width:10px;height:10px;margin:-16px 0 0 6px; background:var(--yellow); animation-duration:0.52s; animation-delay:0.07s; --bx:12px; --by:-14px; --bscale:2.0;"></span>
+      <span class="bubble" style="width:8px;height:8px;margin:10px 0 0 12px; background:transparent; border:2px solid var(--yellow); animation-duration:0.5s; animation-delay:0.12s; --bx:18px; --by:16px; --bscale:2.3;"></span>
+      <span class="bubble" style="width:19px;height:19px;margin:-4px 0 0 -28px; background:transparent; border:2px solid var(--blue); animation-duration:0.6s; animation-delay:0.05s; --bx:-24px; --by:-6px; --bscale:1.6;"></span>
+      <span class="bubble" style="width:6px;height:6px;margin:-20px 0 0 -8px; background:var(--blue); animation-duration:0.46s; animation-delay:0.14s; --bx:-4px; --by:-16px; --bscale:2.4;"></span>
+      <span class="bubble" style="width:12px;height:12px;margin:2px 0 0 -18px; background:transparent; border:2px solid var(--yellow); animation-duration:0.56s; animation-delay:0.1s; --bx:-20px; --by:18px; --bscale:1.9;"></span>
     </div>
   </div>
 
   <div class="wrap hero-grid">
     <div>
       <h1>AHMED<br>SHAWKY</h1>
-      <p class="hero-role"><b>Video Editor</b> · <b>Motion Designer</b> · <b>Content Creator</b></p>
-      <p class="hero-desc">5+ years combining creativity, storytelling and visual communication — working with clients and brands across the UAE, Egypt, Saudi Arabia and Kuwait.</p>
+      <p class="hero-role"><b>Video Editor</b> · <b>Motion Designer</b><br><b>Content Creator</b></p>
+      <p class="hero-desc">5+ years combining creativity, storytelling and visual communication — working with clients and<br>brands across the UAE, Egypt, Saudi Arabia and Kuwait.</p>
       <div class="hero-cta">
         <a href="work.html#work" class="btn btn-primary">See My Work</a>
         <a href="https://www.behance.net/AhmeedShawky" target="_blank" rel="noopener" class="btn btn-ghost">Behance</a>
         <a href="https://www.instagram.com/ahmedsshawky8/" target="_blank" rel="noopener" class="btn btn-ghost">Instagram</a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CONTACT ================= -->
-<section id="contact" class="contact">
-  <div class="wrap reveal">
-    <div class="tc-label mono">CONTACT</div>
-    <h2>Let's create something worth watching.</h2>
-    <p class="contact-desc">Always looking for new challenges, creative collaborations, and ideas worth turning into visuals.</p>
-    <div class="contact-links">
-      <a href="https://wa.me/971507477212" target="_blank" rel="noopener">WhatsApp <span class="arrow mono">+971 50 747 7212 →</span></a>
-      <a href="https://www.instagram.com/ahmedsshawky8/" target="_blank" rel="noopener">Instagram <span class="arrow mono">@ahmedsshawky8 →</span></a>
+      <div class="hero-contact">
+        <span class="hero-contact-label mono">Contact Me</span>
+        <div class="hero-contact-links">
+          <a href="https://wa.me/971507477212" target="_blank" rel="noopener" class="btn btn-ghost">WhatsApp</a>
+          <a href="mailto:ahmeedshawky800@gmail.com" class="btn btn-ghost">Gmail</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -819,11 +820,11 @@
       const angle = centerAngle + range - t * (range * 2);
       clapperArm.style.transform = 'rotate(' + angle + 'deg)';
 
-      const closeThreshold = centerAngle - range + 12;
+      const closeThreshold = centerAngle - range + 2;
       if(angle <= closeThreshold && !clapWasClosed){
         clapWasClosed = true;
         triggerClapImpact();
-      } else if(angle > closeThreshold + 6){
+      } else if(angle > closeThreshold + 4){
         clapWasClosed = false;
       }
     });
@@ -849,6 +850,23 @@
     });
   }, {threshold:0.15});
   revealEls.forEach(el => io.observe(el));
+
+  // Water ripple effect on click, anywhere on the page
+  document.addEventListener('click', (e) => {
+    for(let i = 0; i < 3; i++){
+      const wave = document.createElement('div');
+      wave.className = 'ripple-wave' + (i % 2 ? ' wave-b' : '');
+      const size = 18 + i * 11;
+      wave.style.width = size + 'px';
+      wave.style.height = size + 'px';
+      wave.style.left = e.clientX + 'px';
+      wave.style.top = e.clientY + 'px';
+      wave.style.animation = 'rippleExpand ' + (0.6 + i * 0.15) + 's ease-out ' + (i * 0.08) + 's forwards';
+      document.body.appendChild(wave);
+      setTimeout(() => wave.remove(), 1300);
+    }
+  });
+
 </script>
 
 </body>

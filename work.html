@@ -706,6 +706,23 @@
   @media(max-width:1024px){
     .clapper-wrap{ display:none; }
   }
+
+  /* ---------- WATER RIPPLE CLICK EFFECT ---------- */
+  .ripple-wave{
+    position:fixed;
+    border:2px solid var(--blue);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    left:0; top:0;
+    transform:translate(-50%,-50%) scale(0.2);
+    opacity:0.75;
+  }
+  .ripple-wave.wave-b{ border-color:var(--yellow); }
+  @keyframes rippleExpand{
+    0%{ transform:translate(-50%,-50%) scale(0.2); opacity:0.75; }
+    100%{ transform:translate(-50%,-50%) scale(3.4); opacity:0; }
+  }
 </style>
 <body>
 
@@ -1034,6 +1051,23 @@
     });
   }, {threshold:0.15});
   revealEls.forEach(el => io.observe(el));
+
+  // Water ripple effect on click, anywhere on the page
+  document.addEventListener('click', (e) => {
+    for(let i = 0; i < 3; i++){
+      const wave = document.createElement('div');
+      wave.className = 'ripple-wave' + (i % 2 ? ' wave-b' : '');
+      const size = 18 + i * 11;
+      wave.style.width = size + 'px';
+      wave.style.height = size + 'px';
+      wave.style.left = e.clientX + 'px';
+      wave.style.top = e.clientY + 'px';
+      wave.style.animation = 'rippleExpand ' + (0.6 + i * 0.15) + 's ease-out ' + (i * 0.08) + 's forwards';
+      document.body.appendChild(wave);
+      setTimeout(() => wave.remove(), 1300);
+    }
+  });
+
 </script>
 
 </body>
